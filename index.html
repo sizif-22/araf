@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio — ARAF | Acumen Resilient Agriculture Fund</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Sora:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ══════════════════════════════════════════
+   RESET & ROOT
+══════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --white: #FFFFFF;
+            --off: #F8F7F4;
+            --stone: #EDE9E0;
+            --ink: #0C0C0A;
+            --ink2: #4A4840;
+            --ink3: #9A9590;
+            --green: #1A6B3C;
+            --green2: #2E9B5A;
+            --green-lt: #E8F5EE;
+            --line: rgba(12, 12, 10, .1);
+            --ease: cubic-bezier(.16, 1, .3, 1);
+            --easein: cubic-bezier(.7, 0, .84, 0);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--white);
+            color: var(--ink);
+            font-family: 'Sora', system-ui, sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        .page-wrap {
+            /* max-width: 1400px; */
+            /* padding: 0 10%; */
+            margin: 0 auto;
+            background: var(--white);
+            box-shadow: 0 0 60px rgba(0, 0, 0, .06);
+            position: relative;
+        }
+
+        /* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 10px;
+            height: 10px;
+            background: var(--green);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform .15s var(--ease), width .3s var(--ease), height .3s var(--ease), background .3s;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(26, 107, 60, .35);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform .45s var(--ease), width .35s var(--ease), height .35s var(--ease), opacity .3s;
+            transform: translate(-50%, -50%);
+        }
+
+        body:has(.card:hover) .cursor {
+            width: 60px;
+            height: 60px;
+            background: var(--green);
+            opacity: .2;
+        }
+
+        body:has(.card:hover) .cursor-ring {
+            opacity: 0;
+        }
+
+        /* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .93);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--line);
+            transition: box-shadow .3s;
+        }
+
+        .nav-inner {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 56px;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 2px 24px rgba(0, 0, 0, .06);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: .6px;
+            text-transform: uppercase;
+            color: var(--ink2);
+            text-decoration: none;
+            padding: 10px 18px;
+            position: relative;
+            transition: color .25s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 18px;
+            right: 18px;
+            height: 1.5px;
+            background: var(--green);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s var(--ease);
+        }
+
+        .nav-links a:hover {
+            color: var(--ink);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            transform: scaleX(1);
+        }
+
+        .nav-links a.active {
+            color: var(--ink);
+        }
+
+        .nav-contact {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--ink);
+            padding: 10px 24px;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: background .3s;
+        }
+
+        .nav-contact:hover {
+            background: var(--green);
+        }
+
+        /* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+        .hero {
+            padding: 140px 72px 56px;
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 0;
+            align-items: end;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+            min-height: 80vh;
+        }
+
+        /* Giant decorative background number */
+        .hero-bg-num {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(180px, 22vw, 340px);
+            font-weight: 400;
+            color: rgba(12, 12, 10, .035);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .hero-left {
+            padding-bottom: 56px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .eyebrow-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: breathe 2.5s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(.6);
+                opacity: .5;
+            }
+        }
+
+        .eyebrow-text {
+            font-size: 10.5px;
+            font-weight: 500;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--green);
+        }
+
+        .hero-h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 5vw, 72px);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -.3px;
+            color: var(--ink);
+            text-shadow: 0 2px 24px rgba(26, 107, 60, .06);
+            margin-bottom: 24px;
+        }
+
+        .hero-h1 em {
+            font-style: italic;
+            color: var(--green2);
+        }
+
+        .hero-desc {
+            font-size: 14.5px;
+            font-weight: 300;
+            color: var(--ink2);
+            line-height: 1.85;
+            max-width: 520px;
+        }
+
+        /* Right panel stats */
+        .hero-right {
+            height: 100%;
+            border-right: none;
+            border-left: 1px solid var(--line);
+            padding: 0 0 56px 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-n {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(52px, 7vw, 88px);
+            font-weight: 400;
+            color: var(--ink);
+            line-height: .85;
+            letter-spacing: -2px;
+        }
+
+        .stat-n sup {
+            font-size: .38em;
+            color: var(--green2);
+            vertical-align: super;
+            letter-spacing: 0;
+        }
+
+        .stat-l {
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--ink3);
+        }
+
+        .stat-hr {
+            width: 32px;
+            height: 1px;
+            background: var(--line);
+        }
+
+        /* ══════════════════════════════════════════
+   TICKER STRIP
+══════════════════════════════════════════ */
+        .ticker-wrap {
+            background: var(--green);
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .ticker-wrap::before,
+        .ticker-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ticker-wrap::before {
+            left: 0;
+            background: linear-gradient(to right, var(--green) 0%, transparent 100%);
+        }
+
+        .ticker-wrap::after {
+            right: 0;
+            background: linear-gradient(to left, var(--green) 0%, transparent 100%);
+        }
+
+        .ticker-inner {
+            display: inline-block;
+            animation: ticker 28s linear infinite;
+        }
+
+        .ticker-inner:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes ticker {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .85);
+            padding: 0 28px;
+        }
+
+        .ticker-sep {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .4);
+            flex-shrink: 0;
+        }
+
+        /* ══════════════════════════════════════════
+   SECTION META
+══════════════════════════════════════════ */
+        .section-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 56px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .meta-label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 10.5px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ink3);
+        }
+
+        .meta-label::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--ink3);
+        }
+
+        .meta-count {
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--ink3);
+            letter-spacing: .5px;
+        }
+
+        /* ══════════════════════════════════════════
+   PORTFOLIO GRID
+══════════════════════════════════════════ */
+        .grid-outer {
+            padding: 16px;
+            background: var(--stone);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        /* ── CARD ── */
+        .card {
+            position: relative;
+            background: var(--white);
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: opacity .65s var(--ease), transform .65s var(--ease), background .4s, box-shadow .4s var(--ease);
+        }
+
+        .card:hover {
+            background: var(--off);
+        }
+
+        /* Card index number */
+        .card-num {
+            position: absolute;
+            top: 16px;
+            left: 18px;
+            z-index: 3;
+            font-family: 'Playfair Display', serif;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--ink3);
+            letter-spacing: .5px;
+            transition: opacity .3s, color .3s;
+        }
+
+        .card:hover .card-num {
+            opacity: 0;
+        }
+
+        /* ── LOGO face ── */
+        .card-front {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            transition: transform .6s var(--ease), opacity .4s var(--ease);
+        }
+
+        .card-front img {
+            max-width: 72%;
+            max-height: 52%;
+            object-fit: contain;
+            filter: saturate(.9) contrast(1.02);
+            transition: transform .6s var(--ease), filter .5s;
+        }
+
+        .card:hover .card-front {
+            transform: scale(.82) translateY(-8%);
+            opacity: .0;
+        }
+
+        /* ── INFO overlay ── */
+        .card-over {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: var(--ink);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 22px;
+            transform: translateY(100%);
+            transition: transform .6s var(--ease);
+        }
+
+        .card:hover .card-over {
+            transform: translateY(0);
+        }
+
+        /* Decorative large number in overlay */
+        .over-deco {
+            position: absolute;
+            top: -12px;
+            right: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: 100px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, .05);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .over-logo {
+            width: 36px;
+            height: 36px;
+            background: var(--white);
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .over-logo img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        .over-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(15px, 2vw, 22px);
+            font-weight: 400;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 6px;
+        }
+
+        .over-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .5);
+            border: 1px solid rgba(255, 255, 255, .15);
+            padding: 3px 10px;
+            border-radius: 100px;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .over-desc {
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .55);
+            line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .over-link {
+            margin-top: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .45);
+            text-decoration: none;
+            transition: color .2s, gap .25s;
+            width: fit-content;
+        }
+
+        .over-link::after {
+            content: '↗';
+            font-size: 12px;
+            transition: transform .25s var(--ease);
+        }
+
+        .over-link:hover {
+            color: var(--white);
+            gap: 12px;
+        }
+
+        .over-link:hover::after {
+            transform: translate(2px, -2px);
+        }
+
+        /* Colored accent line at top of overlay */
+        .card-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            z-index: 10;
+        }
+
+        /* Scroll-reveal entrance (IntersectionObserver) */
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        .card.visible {
+            animation: riseIn .65s var(--ease) forwards;
+        }
+
+        .card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            animation: none;
+            transition: transform .4s var(--ease), box-shadow .4s var(--ease), background .4s;
+        }
+
+        .card.revealed:hover {
+            z-index: 10;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .08);
+        }
+
+        .card.visible:nth-child(5n+1) {
+            animation-delay: .05s;
+        }
+
+        .card.visible:nth-child(5n+2) {
+            animation-delay: .1s;
+        }
+
+        .card.visible:nth-child(5n+3) {
+            animation-delay: .15s;
+        }
+
+        .card.visible:nth-child(5n+4) {
+            animation-delay: .2s;
+        }
+
+        .card.visible:nth-child(5n+5) {
+            animation-delay: .25s;
+        }
+
+        /* ══════════════════════════════════════════
+   FOCUS COUNTRIES STRIP
+══════════════════════════════════════════ */
+        .countries {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            border-top: 1.5px solid var(--line);
+            border-bottom: 1.5px solid var(--line);
+            background: var(--white);
+        }
+
+        .country-cell {
+            padding: 24px 28px;
+            border-right: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+            transition: background .3s;
+        }
+
+        .country-cell:last-child {
+            border-right: none;
+        }
+
+        .country-cell:hover {
+            background: var(--green-lt);
+        }
+
+        .country-cell::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--green);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s var(--ease);
+        }
+
+        .country-cell:hover::after {
+            transform: scaleX(1);
+        }
+
+        .country-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 3px;
+        }
+
+        .country-count {
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink3);
+        }
+
+        /* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+        footer {
+            padding: 28px 56px;
+            background: var(--off);
+            border-top: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .footer-brand img {
+            height: 28px;
+            width: auto;
+            object-fit: contain;
+            opacity: .75;
+            filter: grayscale(.2);
+        }
+
+        footer p,
+        footer a {
+            font-size: 11.5px;
+            font-weight: 300;
+            color: var(--ink3);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--green);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .footer-divider {
+            width: 1px;
+            height: 12px;
+            background: var(--line);
+        }
+
+        /* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+        @media(max-width:1100px) {
+
+            nav,
+            .hero,
+            .section-meta,
+            footer {
+                padding-left: 32px;
+                padding-right: 32px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding-bottom: 0;
+            }
+
+            .hero-right {
+                flex-direction: row;
+                align-items: flex-end;
+                padding: 32px 0 40px;
+                border-left: none;
+                border-top: 1px solid var(--line);
+            }
+
+            .stat-hr {
+                width: 1px;
+                height: 40px;
+            }
+
+            .hero-bg-num {
+                display: none;
+            }
+
+            .countries {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .nav-inner {
+                padding: 0 32px;
+            }
+        }
+
+        @media(max-width:780px) {
+            .nav-inner {
+                padding: 0 20px;
+            }
+
+            .nav-links,
+            .nav-contact {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                padding: 120px 50px 0;
+                min-height: auto;
+            }
+
+            .hero-left {
+                padding-bottom: 36px;
+            }
+
+            .hero-desc {
+                font-size: 15px;
+            }
+
+            .hero-right {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 28px 0 36px;
+                gap: 24px;
+            }
+
+            .stat-hr {
+                width: 40px;
+                height: 1px;
+            }
+
+            .section-meta {
+                padding: 20px;
+            }
+
+            .grid-outer {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                padding: 6px;
+            }
+
+            .card {
+                border-radius: 8px;
+            }
+
+            .countries {
+                grid-template-columns: none;
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .countries::-webkit-scrollbar {
+                display: none;
+            }
+
+            .country-cell {
+                flex: 0 0 55%;
+                scroll-snap-align: start;
+                border-right: 1px solid var(--line);
+            }
+
+            .country-cell:last-child {
+                border-right: none;
+            }
+
+            footer {
+                padding: 24px 20px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-brand {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .ticker-item {
+                padding: 0 18px;
+            }
+        }
+
+        @media(max-width:480px) {
+            .grid-outer {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .card {
+                aspect-ratio: 4/3;
+                border-radius: 10px;
+            }
+
+            .country-cell {
+                flex: 0 0 72%;
+            }
+
+            .section-meta {
+                padding: 16px 20px;
+                margin-bottom: 0;
+            }
+
+            .ticker-wrap {
+                margin-bottom: 4px;
+            }
+        }
+
+        /* ══════════════════════════════════════════
+   HAMBURGER MENU
+══════════════════════════════════════════ */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 600;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--ink);
+            transition: transform .3s var(--ease), opacity .2s;
+            transform-origin: center;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .nav-mobile-menu {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, .97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            z-index: 499;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform .45s var(--ease), opacity .35s;
+            pointer-events: none;
+        }
+
+        .nav-mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .nav-mobile-menu a {
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink2);
+            text-decoration: none;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--line);
+            width: 75%;
+            text-align: center;
+            transition: color .2s;
+        }
+
+        .nav-mobile-menu a:hover,
+        .nav-mobile-menu a.active {
+            color: var(--green);
+        }
+
+        .nav-mobile-menu .mob-invest {
+            margin-top: 28px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--ink);
+            padding: 14px 44px;
+            border-radius: 2px;
+            text-decoration: none;
+            border-bottom: none;
+            width: auto;
+            transition: background .3s;
+        }
+
+        .nav-mobile-menu .mob-invest:hover {
+            background: var(--green);
+        }
+
+        /* ══════════════════════════════════════════
+   BACK TO TOP
+══════════════════════════════════════════ */
+        .back-to-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink3);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--line);
+            border-radius: 100px;
+            transition: color .25s, border-color .25s, transform .25s;
+        }
+
+        .back-to-top:hover {
+            color: var(--green);
+            border-color: var(--green);
+            transform: translateY(-2px);
+        }
+
+        /* ══════════════════════════════════════════
+   AMBIENT DECORATIONS
+══════════════════════════════════════════ */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -120px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(26, 107, 60, .06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(46, 155, 90, .04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            pointer-events: none;
+            opacity: .022;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px 200px;
+        }
+
+        /* ══════════════════════════════════════════
+   TOUCH DEVICE OVERRIDES
+══════════════════════════════════════════ */
+        @media(pointer:coarse) {
+
+            .cursor,
+            .cursor-ring {
+                display: none !important;
+            }
+
+            .card.revealed:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .card-over {
+                transform: translateY(0);
+                background: linear-gradient(to top, rgba(12, 12, 10, .92) 0%, rgba(12, 12, 10, .6) 35%, transparent 60%);
+            }
+
+            .card:hover .card-over {
+                transform: translateY(0);
+            }
+
+            .card-front {
+                transform: none !important;
+                opacity: 1 !important;
+            }
+
+            .card:hover .card-front {
+                transform: none;
+                opacity: 1;
+            }
+
+            .over-deco {
+                display: none;
+            }
+
+            .over-logo {
+                display: none;
+            }
+
+            .over-desc {
+                -webkit-line-clamp: 2;
+            }
+
+            .over-link {
+                pointer-events: all;
+            }
+
+            .card-num {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="https://arafund.com" class="nav-logo">
+                <img src="https://arafund.com/wp-content/uploads/2022/01/araf-home-logo-1.jpg"
+                    alt="ARAF — Acumen Resilient Agriculture Fund">
+            </a>
+            <ul class="nav-links">
+                <li><a href="https://arafund.com/">Home</a></li>
+                <li><a href="https://arafund.com/investment-team/">Team</a></li>
+                <li><a href="https://arafund.com/portfolio/" class="active">Portfolio</a></li>
+                <li><a href="https://arafund.com/contact/">Contact Us</a></li>
+            </ul>
+            <a href="https://arafund.com/contact/" class="nav-contact">Invest</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="nav-mobile-menu" id="mobileMenu">
+        <a href="https://arafund.com/">Home</a>
+        <a href="https://arafund.com/investment-team/">Team</a>
+        <a href="https://arafund.com/portfolio/" class="active">Portfolio</a>
+        <a href="https://arafund.com/contact/">Contact Us</a>
+        <a href="https://arafund.com/contact/" class="mob-invest">Invest</a>
+    </div>
+
+    <div class="page-wrap">
+
+        <!-- ══ HERO ══ -->
+        <section class="hero">
+            <div class="hero-bg-num">10</div>
+
+            <div class="hero-left">
+                <div class="hero-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    <span class="eyebrow-text">Investment Portfolio</span>
+                </div>
+                <h1 class="hero-h1">
+                    Building Africa's<br>
+                    <em>resilient</em> food<br>
+                    systems
+                </h1>
+                <p class="hero-desc">
+                    ARAF backs early-stage innovators transforming agri-food value chains across Sub-Saharan Africa —
+                    from
+                    seed to shelf, farm to fork.
+                </p>
+            </div>
+
+            <div class="hero-right">
+                <div class="stat">
+                    <div class="stat-n">10<sup>+</sup></div>
+                    <div class="stat-l">Portfolio<br>Companies</div>
+                </div>
+                <div class="stat-hr"></div>
+                <div class="stat">
+                    <div class="stat-n">8</div>
+                    <div class="stat-l">African<br>Countries</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ TICKER ══ -->
+        <div class="ticker-wrap" aria-hidden="true">
+            <div class="ticker-inner">
+                <span class="ticker-item">SunCulture<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Tomato Jos<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Farmerline<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Farm Works<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Beyond Good<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Victory Farms<span class="ticker-sep"></span></span>
+                <span class="ticker-item">East Africa Fruits<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Ibisa<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Complete Farmer<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Winich Farms<span class="ticker-sep"></span></span>
+                <!-- duplicate for seamless loop -->
+                <span class="ticker-item">SunCulture<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Tomato Jos<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Farmerline<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Farm Works<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Beyond Good<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Victory Farms<span class="ticker-sep"></span></span>
+                <span class="ticker-item">East Africa Fruits<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Ibisa<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Complete Farmer<span class="ticker-sep"></span></span>
+                <span class="ticker-item">Winich Farms<span class="ticker-sep"></span></span>
+            </div>
+        </div>
+
+        <!-- ══ SECTION META ══ -->
+        <div class="section-meta">
+            <div class="meta-label">All Investments</div>
+            <div class="meta-count">Showing 10 of 10+ portfolio companies</div>
+        </div>
+
+        <!-- ══ PORTFOLIO GRID ══ -->
+        <div class="grid-outer">
+
+            <!-- 01 SunCulture -->
+            <div class="card">
+                <div class="card-accent" style="background:#22c55e;"></div>
+                <div class="card-num">01</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2021/07/SunCulture.jpg" alt="SunCulture logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">01</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2021/07/SunCulture.jpg"
+                            alt="">
+                    </div>
+                    <div class="over-name">SunCulture</div>
+                    <span class="over-tag">AgriTech · Kenya</span>
+                    <p class="over-desc">Solar-powered irrigation and agri-finance enabling smallholder farmers across
+                        East
+                        Africa to grow more with less water.</p>
+                    <a href="https://sunculture.io" target="_blank" rel="noreferrer" class="over-link">Visit Company</a>
+                </div>
+            </div>
+
+            <!-- 02 Tomato Jos -->
+            <div class="card">
+                <div class="card-accent" style="background:#ef4444;"></div>
+                <div class="card-num">02</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/04/tomato.jpg" alt="Tomato Jos logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">02</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2024/04/tomato.jpg" alt="">
+                    </div>
+                    <div class="over-name">Tomato Jos</div>
+                    <span class="over-tag">Supply Chain · Nigeria</span>
+                    <p class="over-desc">Integrated tomato farming and processing reducing post-harvest losses across
+                        West
+                        Africa.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 03 Farmerline -->
+            <div class="card">
+                <div class="card-accent" style="background:#3b82f6;"></div>
+                <div class="card-num">03</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/04/farmerline.jpg" alt="Farmerline logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">03</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2024/04/farmerline.jpg"
+                            alt="">
+                    </div>
+                    <div class="over-name">Farmerline</div>
+                    <span class="over-tag">Digital Advisory · Ghana</span>
+                    <p class="over-desc">Mobile-first platform delivering market information, financial tools and crop
+                        advisory to rural farmers.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 04 Farm Works -->
+            <div class="card">
+                <div class="card-accent" style="background:#f97316;"></div>
+                <div class="card-num">04</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/04/farms.jpg" alt="Farm Works logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">04</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2024/04/farms.jpg" alt="">
+                    </div>
+                    <div class="over-name">Farm Works</div>
+                    <span class="over-tag">Food Systems · Pan-Africa</span>
+                    <p class="over-desc">Pan-African marketplace connecting smallholder farmers directly to
+                        institutional
+                        food buyers.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 05 Beyond Good -->
+            <div class="card">
+                <div class="card-accent" style="background:#92400e;"></div>
+                <div class="card-num">05</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/04/beyond-1.jpg" alt="Beyond Good logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">05</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2024/04/beyond-1.jpg"
+                            alt="">
+                    </div>
+                    <div class="over-name">Beyond Good</div>
+                    <span class="over-tag">FinTech · Africa</span>
+                    <p class="over-desc">Blended finance vehicles enabling climate-resilient agriculture investment at
+                        scale.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 06 Victory Farms -->
+            <div class="card">
+                <div class="card-accent" style="background:#10b981;"></div>
+                <div class="card-num">06</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/04/victory-farms-1.jpg"
+                        alt="Victory Farms logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">06</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2024/04/victory-farms-1.jpg"
+                            alt=""></div>
+                    <div class="over-name">Victory Farms</div>
+                    <span class="over-tag">Aquaculture · Kenya</span>
+                    <p class="over-desc">Kenya's largest tilapia fish farm with a vertically integrated cold-chain
+                        supply
+                        network.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 07 East Africa Fruits -->
+            <div class="card">
+                <div class="card-accent" style="background:#06b6d4;"></div>
+                <div class="card-num">07</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/04/east-africa.jpg"
+                        alt="East Africa Fruits logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">07</div>
+                    <div class="over-logo"><img src="https://arafund.com/wp-content/uploads/2024/04/east-africa.jpg"
+                            alt="">
+                    </div>
+                    <div class="over-name">East Africa Fruits</div>
+                    <span class="over-tag">Logistics · EAC</span>
+                    <p class="over-desc">Cross-border platform digitising agricultural commodity flows across the East
+                        African Community.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 08 Ibisa -->
+            <div class="card">
+                <div class="card-accent" style="background:#1A6B3C;"></div>
+                <div class="card-num">08</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/12/IBISA_Company-Logo.jpg" alt="Ibisa logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">08</div>
+                    <div class="over-logo"><img
+                            src="https://arafund.com/wp-content/uploads/2024/12/IBISA_Company-Logo.jpg" alt=""></div>
+                    <div class="over-name">Ibisa</div>
+                    <span class="over-tag">Climate Insurance</span>
+                    <p class="over-desc">Blockchain-powered parametric crop insurance protecting smallholder farmers
+                        against
+                        weather shocks.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 09 Complete Farmer -->
+            <div class="card">
+                <div class="card-accent" style="background:#16a34a;"></div>
+                <div class="card-num">09</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/09/Complete-Farmer-Logo-1.webp"
+                        alt="Complete Farmer logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">09</div>
+                    <div class="over-logo"><img
+                            src="https://arafund.com/wp-content/uploads/2024/09/Complete-Farmer-Logo-1.webp" alt="">
+                    </div>
+                    <div class="over-name">Complete Farmer</div>
+                    <span class="over-tag">AgriTech · Ghana</span>
+                    <p class="over-desc">End-to-end platform enabling anyone to remotely invest in and manage farms
+                        across
+                        West Africa.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+            <!-- 10 Winich Farms -->
+            <div class="card">
+                <div class="card-accent" style="background:#d97706;"></div>
+                <div class="card-num">10</div>
+                <div class="card-front">
+                    <img src="https://arafund.com/wp-content/uploads/2024/12/Winichfarms-logo-v2.jpg"
+                        alt="Winich Farms logo">
+                </div>
+                <div class="card-over">
+                    <div class="over-deco">10</div>
+                    <div class="over-logo"><img
+                            src="https://arafund.com/wp-content/uploads/2024/12/Winichfarms-logo-v2.jpg" alt=""></div>
+                    <div class="over-name">Winich Farms</div>
+                    <span class="over-tag">Horticulture · Uganda</span>
+                    <p class="over-desc">Technology-enabled horticultural farming linking Ugandan farmers directly to
+                        global
+                        export markets.</p>
+                    <a href="https://arafund.com/portfolio/" target="_blank" rel="noreferrer" class="over-link">Learn
+                        More</a>
+                </div>
+            </div>
+
+        </div><!-- /grid-outer -->
+
+        <!-- ══ COUNTRY FOCUS ══ -->
+        <div class="countries">
+            <div class="country-cell">
+                <div class="country-name">Kenya</div>
+                <div class="country-count">3 Companies</div>
+            </div>
+            <div class="country-cell">
+                <div class="country-name">Ghana</div>
+                <div class="country-count">2 Companies</div>
+            </div>
+            <div class="country-cell">
+                <div class="country-name">Nigeria</div>
+                <div class="country-count">1 Company</div>
+            </div>
+            <div class="country-cell">
+                <div class="country-name">Uganda</div>
+                <div class="country-count">1 Company</div>
+            </div>
+            <div class="country-cell">
+                <div class="country-name">Pan-Africa</div>
+                <div class="country-count">3 Companies</div>
+            </div>
+        </div>
+
+        <!-- ══ FOOTER ══ -->
+        <footer>
+            <div class="footer-brand">
+                <img src="https://arafund.com/wp-content/uploads/2022/01/araf-home-logo-1.jpg" alt="ARAF">
+                <p>ARAF © 2025 · All Rights Reserved · Created by <a href="https://webbingstone.com" target="_blank"
+                        rel="noreferrer">WebbingStone</a></p>
+            </div>
+            <div class="footer-links">
+                <a href="https://arafund.com/privacy-policy/">Privacy Policy</a>
+                <div class="footer-divider"></div>
+                <a href="https://arafund.com/terms-of-use/">Terms of Use</a>
+            </div>
+            <a href="#navbar" class="back-to-top">↑ Back to Top</a>
+        </footer>
+    </div><!-- /page-wrap -->
+
+    <script>
+        // ── Touch detection
+        const isTouch = matchMedia('(pointer:coarse)').matches;
+
+        // ── Custom cursor (desktop only)
+        if (!isTouch) {
+            const cur = document.getElementById('cursor');
+            const ring = document.getElementById('cursor-ring');
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            document.addEventListener('mousemove', e => {
+                mx = e.clientX; my = e.clientY;
+                cur.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+            });
+            (function animRing() {
+                rx += (mx - rx) * .12; ry += (my - ry) * .12;
+                ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+                requestAnimationFrame(animRing);
+            })();
+        }
+
+        // ── Navbar shadow on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // ── Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ── Scroll-triggered card reveal (IntersectionObserver)
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.addEventListener('animationend', () => {
+                        entry.target.classList.add('revealed');
+                    }, { once: true });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+
+</html>
